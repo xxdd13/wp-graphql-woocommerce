@@ -508,6 +508,15 @@ class Products {
 				'type'        => 'Boolean',
 				'description' => __( 'Limit result types to types supported by WooGraphQL.', 'wp-graphql-woocommerce' ),
 			),
+            // add author filter
+            'author'          => array(
+                'type'        => 'Int',
+                'description' => __( 'Limit result set to products with a specific author id.', 'wp-graphql-woocommerce' ),
+            ),
+            'authorSlug'          => array(
+                'type'        => 'String',
+                'description' => __( 'Limit result set to products with a specific author slug.', 'wp-graphql-woocommerce' ),
+            ),
 		);
 
 		if ( wc_tax_enabled() ) {
@@ -817,6 +826,14 @@ class Products {
 			$on_sale_ids                = empty( $on_sale_ids ) ? array( 0 ) : $on_sale_ids;
 			$query_args[ $on_sale_key ] = $on_sale_ids;
 		}
+
+        // add author filter
+        if ( ! empty( $where_args['authorSlug'] ) ) {
+            $user = get_user_by("slug", $where_args['authorSlug']);
+            $authorId = ! empty( $user->ID ) ? $user->ID : -1;
+            $query_args['author'] = $authorId;
+            unset($query_args['authorSlug']);
+        }
 
 		/**
 		 * Filter the input fields

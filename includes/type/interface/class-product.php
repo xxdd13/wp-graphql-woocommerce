@@ -258,6 +258,15 @@ class Product {
 				},
 			),
 			'metaData'          => \WPGraphQL\WooCommerce\Type\WPObject\Meta_Data_Type::get_metadata_field_definition(),
+            // add author filter
+            'author'        => array(
+                'type'        => array( 'non_null' => 'Int' ),
+                'description' => __( 'The product author id', 'wp-graphql-woocommerce' ),
+            ),
+            'authorSlug'        => array(
+                'type'        => array( 'non_null' => 'String' ),
+                'description' => __( 'The product author slug', 'wp-graphql-woocommerce' ),
+            ),
 		);
 	}
 }

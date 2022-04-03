@@ -226,6 +226,20 @@ class Product extends WC_Post {
 				'post'                => function() {
 					return ! empty( $this->wc_data->post ) ? $this->wc_data->post : null;
 				},
+                // add author field
+                'author'              => function() {
+                    $postId = ! empty( $this->wc_data->get_id() ) ? $this->wc_data->get_id() : null;
+                    return  ! empty( $postId ) ? get_post_field ('post_author', $postId) : null;
+                },
+                // add author field
+                'authorSlug'              => function() {
+                    $postId = ! empty( $this->wc_data->get_id() ) ? $this->wc_data->get_id() : null;
+                    if( empty( $postId ) ) return null;
+                    $authorId = get_post_field ('post_author', $postId);
+                    if( empty( $authorId ) ) return null;
+                    $user = get_user_by( 'ID', $authorId );
+                    return $user->user_nicename;
+                },
 			);
 
 			if (
